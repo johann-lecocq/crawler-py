@@ -1,0 +1,8 @@
+Compatible Python 3.X
+
+Crawler library for the following sites:
+
+DansTonChat ->	http://danstonchat.com
+VieDeMerde 	->	http://viedemerde.fr
+
+An example of use is provided: test.py

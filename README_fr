@@ -1,0 +1,8 @@
+Compatible Python 3.X
+
+Bibliothèque de crawler pour les sites suivants:
+
+DansTonChat ->	http://danstonchat.com
+VieDeMerde 	->	http://viedemerde.fr
+
+Un exemple d'utilisation est fourni: test.py

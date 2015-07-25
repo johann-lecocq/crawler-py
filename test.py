@@ -1,0 +1,46 @@
+#!/usr/bin/python
+import argparse
+from sys import exit
+
+from crawler.vdm import VdmCrawler
+from crawler.dtc import DtcCrawler
+
+def affiche_article(article):
+    print(article.identifiant,":")
+    for section in article.sections:
+        for data in section.content:
+            print(data.value)
+    print()
+
+crawlers={"vdm":VdmCrawler(),"dtc":DtcCrawler()}
+
+parser = argparse.ArgumentParser()
+parser.add_argument('crawler', action="store",help="dtc(danstonChat.com),vdm(viedemerde.fr)")
+parser.add_argument('action', action="store",help="page, article, random_article, random_page")
+parser.add_argument('--number', action="store", default=0,help="numero de la page ou de l'article")
+
+args = parser.parse_args()
+
+if args.crawler not in crawlers:
+    print("The crawler is not valid")
+    exit(1)
+
+crawler=crawlers[args.crawler]
+actions={"page":crawler.page,"article":crawler.article,
+         "article_random":crawler.article_random,"page_random":crawler.page_random}
+
+if args.action not in actions:
+    print("The action is not valid")
+    exit(2)
+
+if args.action=="page" or args.action=="article":
+    reponse=actions[args.action](int(args.number))
+else:
+    reponse=actions[args.action]()
+
+if reponse.code!=200:
+    print("Error")
+    exit(3)
+
+for article in reponse.data:
+    affiche_article(article)
