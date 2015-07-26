@@ -4,5 +4,10 @@ Bibliothèque de crawler pour les sites suivants:
 
 DansTonChat ->	http://danstonchat.com
 VieDeMerde 	->	http://viedemerde.fr
+SeCoucherMoinsBete -> http://secouchermoinsbete.fr
 
 Un exemple d'utilisation est fourni: test.py
+
+Bibliothèque Externe:
+
+beautifulsoup4

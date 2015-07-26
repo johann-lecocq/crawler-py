@@ -4,6 +4,7 @@ from sys import exit
 
 from crawler.vdm import VdmCrawler
 from crawler.dtc import DtcCrawler
+from crawler.scmb import ScmbCrawler
 
 def affiche_article(article):
     print(article.identifiant,":")
@@ -12,7 +13,11 @@ def affiche_article(article):
             print(data.value)
     print()
 
-crawlers={"vdm":VdmCrawler(),"dtc":DtcCrawler()}
+crawlers={
+    "vdm":VdmCrawler(),
+    "dtc":DtcCrawler(),
+    "scmb":ScmbCrawler()
+}
 
 parser = argparse.ArgumentParser()
 parser.add_argument('crawler', action="store",help="dtc(danstonChat.com),vdm(viedemerde.fr)")
@@ -34,7 +39,7 @@ if args.action not in actions:
     exit(2)
 
 if args.action=="page" or args.action=="article":
-    reponse=actions[args.action](int(args.number))
+    reponse=actions[args.action](args.number)
 else:
     reponse=actions[args.action]()
 
