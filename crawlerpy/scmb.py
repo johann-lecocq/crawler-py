@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from html import unescape
 
-from crawler import ArticleCrawler, HttpCommunicator, ResponseCrawler
-from crawler.parser.scmb import ScmbParser
+from crawlerpy import ArticleCrawler, HttpCommunicator, ResponseCrawler
+from crawlerpy.parser.scmb import ScmbParser
 
 
 __author__="Johann Lecocq(johann-lecocq.fr)"

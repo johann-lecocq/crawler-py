@@ -6,8 +6,8 @@ __version__ = "1.1"
 
 from html import unescape
 
-from crawler import ArticleCrawler, HttpCommunicator, ResponseCrawler
-from crawler.parser.vdm import VdmParser
+from crawlerpy import ArticleCrawler, HttpCommunicator, ResponseCrawler
+from crawlerpy.parser.vdm import VdmParser
 
 
 LIEN_ACCUEIL = "http://m.viedemerde.fr"

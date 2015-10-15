@@ -2,8 +2,8 @@
 
 from bs4 import BeautifulSoup
 
-from crawler.objet import *
-from crawler.parser import Parser
+from crawlerpy.objet import *
+from crawlerpy.parser import Parser
 
 
 __author__="Johann Lecocq(johann-lecocq.fr)"

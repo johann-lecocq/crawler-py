@@ -6,8 +6,8 @@ __version__ = "1.1"
 
 from re import findall,I,U
 
-from crawler.parser import Parser
-from crawler.objet import *
+from crawlerpy.parser import Parser
+from crawlerpy.objet import *
 
 class VdmParser(Parser):
 	"""The implementation of VideDeMerde site parser"""

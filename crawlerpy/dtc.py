@@ -6,8 +6,8 @@ __version__ = "1.1"
 
 from html import unescape
 
-from crawler import ArticleCrawler, HttpCommunicator, ResponseCrawler
-from crawler.parser.dtc import DtcParser
+from crawlerpy import ArticleCrawler, HttpCommunicator, ResponseCrawler
+from crawlerpy.parser.dtc import DtcParser
 
 
 LIEN_ACCUEIL = "http://danstonchat.com/latest.html"

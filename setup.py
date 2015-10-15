@@ -9,7 +9,7 @@ setup(
     author_email='github@johann-lecocq.fr',
     description='A web Crawler',
     long_description=__doc__,
-    packages=['crawlerpy'],
+    packages=['crawlerpy','crawlerpy.objet','crawlerpy.parser'],
     include_package_data=True,
     zip_safe=False,
     platforms='any',
