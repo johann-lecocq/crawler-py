@@ -11,3 +11,7 @@ An example of use is provided: test.py
 External library:
 
 beautifulsoup4
+
+Error code 200 -> OK
+Error code 521 -> Parsing error
+Other error code -> HTTP code error

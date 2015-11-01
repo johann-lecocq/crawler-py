@@ -11,3 +11,7 @@ Un exemple d'utilisation est fourni: test.py
 Bibliothèque Externe:
 
 beautifulsoup4
+
+Code d'erreur 200 -> OK
+Code d'erreur 521 -> Erreur de parsing
+Autre code d'erreur -> Code d'erreur HTTP

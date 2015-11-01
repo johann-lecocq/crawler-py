@@ -2,16 +2,16 @@
 
 __author__="Johann Lecocq(johann-lecocq.fr)"
 __license__ = "GNU GENERAL PUBLIC LICENSE version 2"
-__version__ = "1.1"
+__version__ = "1.2"
 
 from urllib.request import urlopen,HTTPError,URLError
-
+from urllib.error import URLError
 class Communicator:
 	"""interface of a Communicator"""
 	def get(self,lien):
 		"""return a dict
 		response code(required)->integer
-		 data(required)"""
+		data(required)"""
 		pass
 
 class HttpCommunicator(Communicator):
@@ -29,6 +29,9 @@ class HttpCommunicator(Communicator):
 			text=information.decode("utf-8")
 		except HTTPError as e:
 			code=e.code
+			text=""
+		except URLError:
+			code=404
 			text=""
 		return {"code":code,"data":text}
 

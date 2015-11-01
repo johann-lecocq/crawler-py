@@ -2,18 +2,19 @@
 
 __author__ = "Johann Lecocq(johann-lecocq.fr)"
 __license__ = "GNU GENERAL PUBLIC LICENSE version 2"
-__version__ = "1.1"
+__version__ = "1.2"
 
 from html import unescape
 
 from crawlerpy import ArticleCrawler, HttpCommunicator, ResponseCrawler
+from crawlerpy.parser import ParseException
 from crawlerpy.parser.vdm import VdmParser
 
 
 LIEN_ACCUEIL = "http://m.viedemerde.fr"
 LIEN_ALEATOIRE = "http://m.viedemerde.fr/aleatoire"
 LIEN_PAGE = "http://m.viedemerde.fr/?page=%s"
-LIEN_ARTICLE = "http://m.viedemerde.fr/%s"
+LIEN_ARTICLE = "http://m.vieddemerde.fr/%s"
 
 class VdmCrawler(ArticleCrawler):
 	"""The implementation of VieDeMerde crawler"""
@@ -23,7 +24,10 @@ class VdmCrawler(ArticleCrawler):
 		reponse = self.aspirateur.get(lien)
 		if reponse["code"] == 200:
 			text = unescape(reponse["data"]).replace("&quot;", "'")
-			data = self.parser.parse(text)
+			try:
+				data = self.parser.parse(text)
+			except ParseException:
+				return(521,[])
 			code = 200
 		else:
 			code = reponse["code"]

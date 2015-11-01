@@ -2,11 +2,12 @@
 
 __author__ = "Johann Lecocq(johann-lecocq.fr)"
 __license__ = "GNU GENERAL PUBLIC LICENSE version 2"
-__version__ = "1.1"
+__version__ = "1.2"
 
 from html import unescape
 
 from crawlerpy import ArticleCrawler, HttpCommunicator, ResponseCrawler
+from crawlerpy.parser import ParseException
 from crawlerpy.parser.dtc import DtcParser
 
 
@@ -23,7 +24,10 @@ class DtcCrawler(ArticleCrawler):
 		reponse = self.aspirateur.get(lien)
 		if reponse["code"] == 200:
 			text = unescape(reponse["data"])
-			data = self.parser.parse(text)
+			try:
+				data = self.parser.parse(text)
+			except ParseException:
+				return(521,[])
 			code = 200
 		else:
 			code = reponse["code"]
