@@ -6,7 +6,7 @@ __version__ = "1.2"
 
 from re import findall,I,U
 
-from crawlerpy.parser import Parser
+from crawlerpy.parser import Parser,ParseException
 from crawlerpy.objet import *
 
 class VdmParser(Parser):
@@ -14,13 +14,16 @@ class VdmParser(Parser):
 	def __init__(self):
 		pass
 	def parse(self,text):
-		reponse=[]
-		text=text.replace("&quot;","'")
-		l=findall(u"<li id=\"fml-(\d+)\">.*(Aujourd'hui,[-\d\w\s,.;:!'\"’+&?—()]*VDM)",text,I|U)
-		for i in l:
-			section=Section("text")
-			section.add_content(Data("string",i[1]))
-			article=Article(i[0])
-			article.add_section(section)
-			reponse.append(article)
-		return reponse
+		try:
+			reponse=[]
+			text=text.replace("&quot;","'")
+			l=findall(u"<li id=\"fml-(\d+)\">.*(Aujourd'hui,[-\d\w\s,.;:!'\"’+&?—()]*VDM)",text,I|U)
+			for i in l:
+				section=Section("text")
+				section.add_content(Data("string",i[1]))
+				article=Article(i[0])
+				article.add_section(section)
+				reponse.append(article)
+			return reponse
+		except Exception:
+			raise ParseException()
