@@ -2,7 +2,7 @@
 
 __author__ = "Johann Lecocq(johann-lecocq.fr)"
 __license__ = "GNU GENERAL PUBLIC LICENSE version 2"
-__version__ = "1.2"
+__version__ = "1.3"
 
 from html import unescape
 
@@ -14,7 +14,7 @@ from crawlerpy.parser.vdm import VdmParser
 LIEN_ACCUEIL = "http://m.viedemerde.fr"
 LIEN_ALEATOIRE = "http://m.viedemerde.fr/aleatoire"
 LIEN_PAGE = "http://m.viedemerde.fr/?page=%s"
-LIEN_ARTICLE = "http://m.vieddemerde.fr/%s"
+LIEN_ARTICLE = "http://m.viedemerde.fr/%s"
 
 class VdmCrawler(ArticleCrawler):
 	"""The implementation of VieDeMerde crawler"""

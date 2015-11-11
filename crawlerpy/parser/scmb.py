@@ -8,7 +8,7 @@ from crawlerpy.parser import Parser,ParseException
 
 __author__="Johann Lecocq(johann-lecocq.fr)"
 __license__ = "GNU GENERAL PUBLIC LICENSE version 2"
-__version__ = "1.2"
+__version__ = "1.3"
 
 
 class ScmbParser(Parser):
