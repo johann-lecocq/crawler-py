@@ -2,7 +2,7 @@
 
 __author__ = "Johann Lecocq(johann-lecocq.fr)"
 __license__ = "GNU GENERAL PUBLIC LICENSE version 2"
-__version__ = "1.3"
+__version__ = "1.3.1"
 
 from html import unescape
 
@@ -35,7 +35,7 @@ class DtcCrawler(ArticleCrawler):
 		return (code, data)
 	def page(self, id_):
 		global LIEN_PAGE
-		(code, data) = self.__go(LIEN_PAGE % id_)
+		(code, data) = self.__go(LIEN_PAGE % (id_+1))
 		return ResponseCrawler(code,data)
 	def article(self, id_):
 		global LIEN_ARTICLE

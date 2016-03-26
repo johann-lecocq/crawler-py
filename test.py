@@ -39,7 +39,7 @@ if args.action not in actions:
 	exit(2)
 
 if args.action=="page" or args.action=="article":
-	reponse=actions[args.action](args.number)
+	reponse=actions[args.action](int(args.number))
 else:
 	reponse=actions[args.action]()
 
