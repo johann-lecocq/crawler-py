@@ -2,7 +2,6 @@
 
 __author__ = "Johann Lecocq(johann-lecocq.fr)"
 __license__ = "GNU GENERAL PUBLIC LICENSE version 2"
-__version__ = "1.3"
 
 from html import unescape
 
@@ -11,10 +10,10 @@ from crawlerpy.parser import ParseException
 from crawlerpy.parser.vdm import VdmParser
 
 
-LIEN_ACCUEIL = "http://m.viedemerde.fr"
-LIEN_ALEATOIRE = "http://m.viedemerde.fr/aleatoire"
-LIEN_PAGE = "http://m.viedemerde.fr/?page=%s"
-LIEN_ARTICLE = "http://m.viedemerde.fr/%s"
+LIEN_ACCUEIL = "http://www.viedemerde.fr"
+LIEN_ALEATOIRE = "http://www.viedemerde.fr/aleatoire"
+LIEN_PAGE = "http://www.viedemerde.fr/?page=%s"
+LIEN_ARTICLE = "http://www.viedemerde.fr/%s"
 
 class VdmCrawler(ArticleCrawler):
 	"""The implementation of VieDeMerde crawler"""
@@ -23,7 +22,7 @@ class VdmCrawler(ArticleCrawler):
 	def __go(self, lien):
 		reponse = self.aspirateur.get(lien)
 		if reponse["code"] == 200:
-			text = unescape(reponse["data"]).replace("&quot;", "'")
+			text = unescape(reponse["data"])
 			try:
 				data = self.parser.parse(text)
 			except ParseException:
@@ -39,7 +38,7 @@ class VdmCrawler(ArticleCrawler):
 		return ResponseCrawler(code,data)
 	def article(self, id_):
 		global LIEN_ARTICLE
-		(code, data) = self.__go(LIEN_ARTICLE % id_)
+		(code, data) = self.__go(LIEN_ARTICLE % id_.replace("_","/"))
 		return ResponseCrawler(code,data)
 	def page_random(self):
 		global LIEN_ALEATOIRE

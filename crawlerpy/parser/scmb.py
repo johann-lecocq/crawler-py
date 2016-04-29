@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+__author__="Johann Lecocq(johann-lecocq.fr)"
+__license__ = "GNU GENERAL PUBLIC LICENSE version 2"
+
 from bs4 import BeautifulSoup
 
 from crawlerpy.objet import *

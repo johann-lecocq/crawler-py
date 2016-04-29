@@ -2,9 +2,9 @@
 
 __author__="Johann Lecocq(johann-lecocq.fr)"
 __license__ = "GNU GENERAL PUBLIC LICENSE version 2"
-__version__ = "1.3"
 
 from re import findall,I,U
+from bs4 import BeautifulSoup
 
 from crawlerpy.parser import Parser,ParseException
 from crawlerpy.objet import *
@@ -16,14 +16,22 @@ class VdmParser(Parser):
 	def parse(self,text):
 		try:
 			reponse=[]
-			text=text.replace("&quot;","'")
-			l=findall(u"<li id=\"fml-(\d+)\">.*(Aujourd'hui,[-\d\w\s,.;:!'\"’+&?—()]*VDM)",text,I|U)
-			for i in l:
+			soup = BeautifulSoup(text, 'html.parser')
+			articles=soup.find_all("div")
+			for article in articles:
+				attribut=article.get("class")
+				if attribut is None or "article" not in attribut:
+					continue
+				article=article.find("a")
+				attribut=article.get("class")
+				if  attribut is None or "fmllink" not in attribut:
+					continue
 				section=Section("text")
-				section.add_content(Data("string",i[1]))
-				article=Article(i[0])
+				section.add_content(Data("string",article.getText()))
+				article=Article(article.get("href")[1::].replace("/","_"))
 				article.add_section(section)
 				reponse.append(article)
 			return reponse
-		except Exception:
+		except Exception as e:
+			print(e)
 			raise ParseException()
