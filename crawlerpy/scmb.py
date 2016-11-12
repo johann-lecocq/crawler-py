@@ -9,6 +9,7 @@ from crawlerpy import ArticleCrawler, HttpCommunicator, ResponseCrawler
 from crawlerpy.parser import ParseException
 from crawlerpy.parser.scmb import ScmbParser
 
+
 LIEN_ACCUEIL="http://secouchermoinsbete.fr"
 LIEN_ALEATOIRE="http://secouchermoinsbete.fr/random"
 LIEN_PAGE="http://secouchermoinsbete.fr/?page=%s"
