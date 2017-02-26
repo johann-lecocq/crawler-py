@@ -12,8 +12,8 @@ from crawlerpy.parser.dtc import DtcParser
 
 LIEN_ACCUEIL = "http://danstonchat.com/latest.html"
 LIEN_ALEATOIRE = "http://danstonchat.com/random.html"
-LIEN_PAGE = "http://danstonchat.com/latest/%s.html"
-LIEN_ARTICLE = "http://danstonchat.com/%s.html"
+LIEN_PAGE = "http://danstonchat.com/latest/{}.html"
+LIEN_ARTICLE = "http://danstonchat.com/{}.html"
 
 class DtcCrawler(ArticleCrawler):
 	"""The implementation of DansTonChat crawler"""
@@ -26,6 +26,7 @@ class DtcCrawler(ArticleCrawler):
 			try:
 				data = self.parser.parse(text)
 			except ParseException:
+				print(e)
 				return(521,[])
 			code = 200
 		else:
@@ -34,11 +35,11 @@ class DtcCrawler(ArticleCrawler):
 		return (code, data)
 	def page(self, id_):
 		global LIEN_PAGE
-		(code, data) = self.__go(LIEN_PAGE % (id_+1))
+		(code, data) = self.__go(LIEN_PAGE.format(id_+1))
 		return ResponseCrawler(code,data)
 	def article(self, id_):
 		global LIEN_ARTICLE
-		(code, data) = self.__go(LIEN_ARTICLE % id_)
+		(code, data) = self.__go(LIEN_ARTICLE.format(id_))
 		return ResponseCrawler(code,data)
 	def page_random(self):
 		global LIEN_ALEATOIRE

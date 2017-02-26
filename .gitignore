@@ -56,7 +56,10 @@ docs/_build/
 # PyBuilder
 target/
 
+#IDE
 #Eclipse
 .settings/
 .project
 .pydevproject
+#Kdevelopp
+*.kdev4

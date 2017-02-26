@@ -13,21 +13,42 @@ class VdmParser(Parser):
     """The implementation of VideDeMerde site parser"""
     def __init__(self):
         pass
+    def __recherche_div_principal(self,racine):
+        principal=None
+        divs=racine.find_all("div")
+
+        for div in divs:
+            attribut=div.get("class")
+            if not (attribut is None) and "infinite-scroll" in attribut:
+                principal=div
+                break
+        if not principal is None:
+            return principal
+
+        for div in divs:
+            attribut=div.get("id")
+            if not (attribut is None) and "content" in attribut:
+                principal=div
+                break
+        divs=principal.find_all("div")
+        for div in divs:
+            attribut=div.get("class")
+            if not (attribut is None) and "col-sm-8" in attribut:
+                principal=div
+                break
+        return principal
     def parse(self,text):
-        print("je passe dans le parser")
         try:
             reponse=[]
             soup = BeautifulSoup(text, 'html.parser')
-            articles=soup.find_all("article")
-            print(len(articles))
+            principal=self.__recherche_div_principal(soup)
+            articles=principal.find_all("article")
             for article in articles:
                 attribut=article.get("class")
                 if attribut is None or "art-panel" not in attribut:
                     continue
                 block=article.find("p")
                 content=block.find("a")
-                print(content.get("href"))
-                print(content.getText())
                 if 'http://www.public.fr' in content.get("href") or "http://people.premiere.fr" in content.get("href"):
                     continue
                 section=Section("text")
@@ -36,7 +57,6 @@ class VdmParser(Parser):
                 a=Article(l)
                 a.add_section(section)
                 reponse.append(a)
-            print(reponse,len(reponse))
             return reponse
         except Exception as e:
             print(e)

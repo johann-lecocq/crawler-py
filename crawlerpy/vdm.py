@@ -12,15 +12,14 @@ from crawlerpy.parser.vdm import VdmParser
 
 LIEN_ACCUEIL = "http://www.viedemerde.fr"
 LIEN_ALEATOIRE = "http://www.viedemerde.fr/aleatoire"
-LIEN_PAGE = "http://www.viedemerde.fr/?page=%s"
-LIEN_ARTICLE = "http://www.viedemerde.fr/article/%s"
+LIEN_PAGE = "http://www.viedemerde.fr/?page={}"
+LIEN_ARTICLE = "http://www.viedemerde.fr/article/{}.html"
 
 class VdmCrawler(ArticleCrawler):
     """The implementation of VieDeMerde crawler"""
     def __init__(self):
         super().__init__(VdmParser(), HttpCommunicator())
     def __go(self, lien):
-        print(lien)
         reponse = self.aspirateur.get(lien)
         if reponse["code"] == 200:
             text = unescape(reponse["data"])
@@ -36,12 +35,11 @@ class VdmCrawler(ArticleCrawler):
         return (code, data)
     def page(self, id_):
         global LIEN_PAGE
-        print(LIEN_PAGE % (id_))
-        (code, data) = self.__go(LIEN_PAGE % (id_))
+        (code, data) = self.__go(LIEN_PAGE.format(id_))
         return ResponseCrawler(code,data)
     def article(self, id_):
         global LIEN_ARTICLE
-        (code, data) = self.__go(LIEN_ARTICLE % id_.replace("__","/")+".html")
+        (code, data) = self.__go(LIEN_ARTICLE.format(id_.replace("__","/")))
         if len(data) > 0:
             data = [data[0]]
         return ResponseCrawler(code,data)

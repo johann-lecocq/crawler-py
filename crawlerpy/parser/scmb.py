@@ -41,6 +41,6 @@ class ScmbParser(Parser):
 				article.add_section(section)
 				reponse.append(article)
 			return reponse
-		except Exception:
+		except Exception as e:
+			print(e)
 			raise ParseException()
-		

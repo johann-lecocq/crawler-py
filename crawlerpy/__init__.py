@@ -22,10 +22,10 @@ class HttpCommunicator(Communicator):
     def get(self,lien):
         code=200
         text=""
-        try:          
+        try:
             req = Request(
-                lien, 
-                data=None, 
+                lien,
+                data=None,
                 headers={
                     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0'
                 }

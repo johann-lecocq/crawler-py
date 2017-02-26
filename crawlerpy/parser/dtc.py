@@ -17,7 +17,7 @@ class DtcParser(Parser):
 			for i in findall(u"<div class=\"item item(\d+)\">(.*?)<p class=\"item-meta\">",text,I|U):
 				id_=i[0]
 				text=i[1]
-				text=text.replace("<p class=\"item-content\"><a href=\"http://danstonchat.com/"+id_+".html\">","")
+				text=text.replace("<p class=\"item-content\"><a href=\"https://danstonchat.com/"+id_+".html\">","")
 				text=text.replace("</a></p>","")
 				text=text.replace("<span class=\"decoration\">","")
 				text=text.replace("</span>","")
@@ -29,5 +29,6 @@ class DtcParser(Parser):
 				article.add_section(section)
 				reponse.append(article)
 			return reponse
-		except Exception:
+		except Exception as e:
+			print(e)
 			raise ParseException()

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='Crawler-py',
-    version='1.3.4',
+    version='1.3.5',
     url='https://github.com/johann-lecocq/crawler-py/',
     license='GNU GPL 2',
     author='Johann Lecocq',
