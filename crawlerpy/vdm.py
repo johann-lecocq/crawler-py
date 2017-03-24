@@ -35,7 +35,10 @@ class VdmCrawler(ArticleCrawler):
         return (code, data)
     def page(self, id_):
         global LIEN_PAGE
-        (code, data) = self.__go(LIEN_PAGE.format(id_))
+        page=int(id_)
+        if page>0:
+            page+=1
+        (code, data) = self.__go(LIEN_PAGE.format(page))
         return ResponseCrawler(code,data)
     def article(self, id_):
         global LIEN_ARTICLE
