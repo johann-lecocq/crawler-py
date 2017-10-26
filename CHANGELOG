@@ -1,12 +1,12 @@
-changement avec la 1.3.6
+changement avec la 1.3.7:
+-fix chargement article VDM
 
-fix probleme de page crawler vdm
+changement avec la 1.3.6:
+-fix probleme de page crawler vdm
 
-changement avec la 1.3.5
+changement avec la 1.3.5:
+-modification du parser vdm et dtc -> modification du site
+-affiche des exception
 
-modification du parser vdm et dtc -> modification du site
-affiche des exception
-
-Changement avec la 1.3.4
-
-modification du parser vdm -> modification du site
+Changement avec la 1.3.4:
+-modification du parser vdm -> modification du site
