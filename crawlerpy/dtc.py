@@ -35,7 +35,7 @@ class DtcCrawler(ArticleCrawler):
 		return (code, data)
 	def page(self, id_):
 		global LIEN_PAGE
-		(code, data) = self.__go(LIEN_PAGE.format(id_+1))
+		(code, data) = self.__go(LIEN_PAGE.format(int(id_)+1))
 		return ResponseCrawler(code,data)
 	def article(self, id_):
 		global LIEN_ARTICLE
