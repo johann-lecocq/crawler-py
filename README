@@ -3,8 +3,11 @@ Compatible Python 3.X
 Crawler library for the following sites:
 
 DansTonChat -> http://danstonchat.com
+
 VieDeMerde -> http://viedemerde.fr
+
 SeCoucherMoinsBete -> http://secouchermoinsbete.fr
+
 
 An example of use is provided: test.py
 
@@ -12,6 +15,10 @@ External library:
 
 beautifulsoup4
 
+requests
+
 Error code 200 -> OK
+
 Error code 521 -> Parsing error
+
 Other error code -> HTTP code error
