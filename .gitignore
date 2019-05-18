@@ -63,3 +63,9 @@ target/
 .pydevproject
 #Kdevelopp
 *.kdev4
+
+\.idea/
+
+\.venv/
+
+\.vscode/
