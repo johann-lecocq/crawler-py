@@ -8,7 +8,7 @@ setup(
     author='Johann Lecocq',
     author_email='git-jo@johann-lecocq.fr',
     description='A web Crawler for DTC(dans ton chat), VDM(vie de merde) and SCMB(se coucher moins bete)',
-    long_description=open('README').read(),
+    long_description=open('README_en.md').read(),
     packages=['crawlerpy'],
     include_package_data=True,
     zip_safe=False,
