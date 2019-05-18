@@ -23,7 +23,7 @@ crawlers = {
 
 parser = argparse.ArgumentParser()
 parser.add_argument('crawler', action="store", help="dtc(danstonChat.com),vdm(viedemerde.fr)")
-parser.add_argument('action', action="store", help="page, article, random_article, random_page")
+parser.add_argument('action', action="store", help="page, article, random_article, random")
 parser.add_argument('--number', action="store", default=0, help="numero de la page ou de l'article")
 
 args = parser.parse_args()
@@ -36,8 +36,7 @@ crawler = crawlers[args.crawler]
 actions = {
     "page": crawler.page,
     "article": crawler.article,
-    "article_random": crawler.article_random,
-    "page_random": crawler.page_random}
+    "random": crawler.random}
 
 if args.action not in actions:
     print("The action is not valid")
@@ -52,5 +51,8 @@ if reponse.code != 200:
     print("Error", reponse.code)
     exit(3)
 
-for article in reponse.data:
-    affiche_article(article)
+if args.action == "article":
+    affiche_article(reponse.data)
+else:
+    for article in reponse.data:
+        affiche_article(article)

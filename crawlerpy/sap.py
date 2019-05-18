@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-
-__author__ = "Johann Lecocq(johann-lecocq.fr)"
-__license__ = "GNU GENERAL PUBLIC LICENSE version 2"
-
-
 class Article:
     """
         Representation of an article
@@ -13,8 +7,8 @@ class Article:
         list of section
     """
 
-    def __init__(self, identifiant, publish_date=None, categorie=None):
-        self.identifiant = identifiant
+    def __init__(self, id, publish_date=None, categorie=None):
+        self.id = id
         self.publish_date = publish_date
         self.categorie = categorie
         self.sections = []
@@ -30,13 +24,13 @@ class Section:
         contains list of data
     """
 
-    def __init__(self, identifiant):
-        self.identifiant = identifiant
-        self.content = []
+    def __init__(self, id):
+        self.id = id
+        self.contents = []
 
     def add_content(self, data):
         """add a content to the Section"""
-        self.content.append(data)
+        self.contents.append(data)
 
 
 class Data:
