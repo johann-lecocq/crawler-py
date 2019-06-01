@@ -2,13 +2,14 @@ from setuptools import setup
 
 setup(
     name='crawler-py',
-    version='2.0.0',
+    version='2.0.1',
     url='http://johann-lecocq.fr/informatique-detail---bibliotheque--crawlerpy.html',
     license='GNU GPL 2',
     author='Johann Lecocq',
     author_email='git-jo@johann-lecocq.fr',
     description='A web Crawler for DTC(dans ton chat), VDM(vie de merde) and SCMB(se coucher moins bete)',
     long_description=open('README_en.md').read(),
+    long_description_content_type='text/markdown',
     packages=['crawlerpy'],
     include_package_data=True,
     zip_safe=False,
