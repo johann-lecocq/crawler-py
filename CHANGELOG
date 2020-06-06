@@ -1,10 +1,13 @@
+2.0.3:
+* fix parser article vdm -> modification du site
+
 2.0.2:
 * fix parser vdm -> modification du site
 
 2.0.1:
 * fix parser vdm(suppresion titre, chagement id)
 
-2.0.0:
+2.0.0 [Break backward compatibility]:
 * refactoring du code de la librairie
 * fix changement parser vdm -> modification du site
 

@@ -38,9 +38,9 @@ def parse_article(text):
         soup = BeautifulSoup(text, 'html.parser')
         div = soup.find("div", attrs={"class":"article-link"})
         # title = div.find("h1",attrs={"class":"classic-title"})
+        citation = "".join(div.find_all(text=True, recursive=False)).strip()
         section = Section("citation")
-        section.add_content(Data("string",div.get_text().strip()))
-        
+        section.add_content(Data("string",citation))
         return section
     except Exception as e:
         raise ParseException(e)
