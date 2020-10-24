@@ -23,8 +23,11 @@ def parse_page(text):
             a = div.find("a", attrs={"class":"article-link"})
             id_= a.get("href").replace("/article/", "").replace(".html", "")
             article = Article(id_)
-            # title = a.find("h2",attrs={"class":"classic-title"})
-            citation = "".join(a.find_all(text=True, recursive=False)).strip()
+            spicy_span = a.find("span",attrs={"class":"spicy-hidden"})
+            if spicy_span:
+                citation = "".join(spicy_span.find_all(text=True, recursive=False))
+            else:
+                citation = "".join(a.find_all(text=True, recursive=False)).strip()
             section = Section("citation")
             section.add_content(Data("string",citation))
             article.add_section(section)
@@ -53,9 +56,12 @@ def parse_random(text):
         for div in principale_div.find_all("div", attrs={"class":"article-contents"}):
             a = div.find("a", attrs={"class":"article-link"})
             id_= a.get("href").replace("/article/", "").replace(".html", "")
-            # title = a.find("h2",attrs={"class":"classic-title"})
             article = Article(id_)
-            citation = "".join(a.find_all(text=True, recursive=False)).strip()
+            spicy_span = a.find("span",attrs={"class":"spicy-hidden"})
+            if spicy_span:
+                citation = "".join(spicy_span.find_all(text=True, recursive=False))
+            else:
+                citation = "".join(a.find_all(text=True, recursive=False)).strip()
             section = Section("citation")
             section.add_content(Data("string",citation))
             article.add_section(section)
