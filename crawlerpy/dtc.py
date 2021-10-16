@@ -2,7 +2,7 @@
 from html import unescape
 #from re import findall, I, U, DOTALL
 from bs4 import BeautifulSoup
-from bs4.element import NavigableString
+from bs4.element import NavigableString, Tag
 
 from crawlerpy import ArticleCrawler, ParseException
 from crawlerpy.sap import Article, Section, Data
@@ -24,10 +24,19 @@ def parse_contenu(div):
     section = Section("quote")
     t=""
     for e in div.find("div",attrs={"class":"item-content"}).find("a").children:
-        if e.name=="span":
-            t="".join(e.find_all(text=True, recursive=False)).strip()
+        if e.name=="br":
+            section.add_content(Data("string",t))
+            t=""
+        elif e.name=="span":
+            for d in e.contents:
+                if type(d) == Tag:
+                    t = "<" + d.name + "> "
+                    break
+            else:
+                t = "".join(e.find_all(text=True, recursive=False)).strip()+" "
         elif type(e)== NavigableString:
-            section.add_content(Data("string", t+e.string.strip()))
+            t+=e.string.strip()
+    section.add_content(Data("string",t))
     article.add_section(section)
     return article
 

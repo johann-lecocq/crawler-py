@@ -17,17 +17,14 @@ def parse_page(text):
         reponse = []
         soup = BeautifulSoup(text, 'html.parser')
         principale_div = soup.find("div",attrs={"class":"jscroll-inner"})
-        for div in principale_div.find_all("div", attrs={"class":"article-contents"}):
-            if div.find("figure"):
-                continue
-            a = div.find("a", attrs={"class":"article-link"})
-            id_= a.get("href").replace("/article/", "").replace(".html", "")
+        for div in principale_div.find_all("article"):
+            for a in div.find_all("a"):
+                cl = a.get("class")
+                if cl and "block" in cl:
+                    id_= a.get("href").replace("/article/", "").replace(".html", "")
+                    citation = "".join(a.find_all(text=True, recursive=False)).strip()
+                    break
             article = Article(id_)
-            spicy_span = a.find("span",attrs={"class":"spicy-hidden"})
-            if spicy_span:
-                citation = "".join(spicy_span.find_all(text=True, recursive=False))
-            else:
-                citation = "".join(a.find_all(text=True, recursive=False)).strip()
             section = Section("citation")
             section.add_content(Data("string",citation))
             article.add_section(section)
@@ -39,12 +36,20 @@ def parse_page(text):
 def parse_article(text):
     try:
         soup = BeautifulSoup(text, 'html.parser')
-        div = soup.find("div", attrs={"class":"article-link"})
-        # title = div.find("h1",attrs={"class":"classic-title"})
-        citation = "".join(div.find_all(text=True, recursive=False)).strip()
-        section = Section("citation")
-        section.add_content(Data("string",citation))
-        return section
+        for principale_div in soup.find_all("div"):
+            cl = principale_div.get("class")
+            if not (cl and "w-full" in cl and "lg:w-2/3" in cl):
+                continue
+            div = principale_div.find("article")
+            for a in div.find_all("a"):
+                cl = a.get("class")
+                if cl and "block" in cl:
+                    id_= a.get("href").replace("/article/", "").replace(".html", "")
+                    citation = "".join(a.find_all(text=True, recursive=False)).strip()
+                    break
+            section = Section("citation")
+            section.add_content(Data("string",citation))
+            return section
     except Exception as e:
         raise ParseException(e)
 
@@ -52,20 +57,22 @@ def parse_random(text):
     try:
         reponse = []
         soup = BeautifulSoup(text, 'html.parser')
-        principale_div = soup.find("div",attrs={"id":"content"}).find("div",attrs={"class":"col-sm-8"})
-        for div in principale_div.find_all("div", attrs={"class":"article-contents"}):
-            a = div.find("a", attrs={"class":"article-link"})
-            id_= a.get("href").replace("/article/", "").replace(".html", "")
-            article = Article(id_)
-            spicy_span = a.find("span",attrs={"class":"spicy-hidden"})
-            if spicy_span:
-                citation = "".join(spicy_span.find_all(text=True, recursive=False))
-            else:
-                citation = "".join(a.find_all(text=True, recursive=False)).strip()
-            section = Section("citation")
-            section.add_content(Data("string",citation))
-            article.add_section(section)
-            reponse.append(article)
+        for principale_div in soup.find_all("div"):
+            cl = principale_div.get("class")
+            if not (cl and "w-full" in cl):
+                continue
+            for div in principale_div.find_all("article"):
+                for a in div.find_all("a"):
+                    cl = a.get("class")
+                    if cl and "block" in cl:
+                        id_= a.get("href").replace("/article/", "").replace(".html", "")
+                        citation = "".join(a.find_all(text=True, recursive=False)).strip()
+                        break
+                article = Article(id_)
+                section = Section("citation")
+                section.add_content(Data("string",citation))
+                article.add_section(section)
+                reponse.append(article)
         return reponse
     except Exception as e:
         raise ParseException(e)
