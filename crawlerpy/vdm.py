@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 from bs4 import BeautifulSoup
 from html import unescape
 
@@ -57,10 +58,7 @@ def parse_random(text):
     try:
         reponse = []
         soup = BeautifulSoup(text, 'html.parser')
-        for principale_div in soup.find_all("div"):
-            cl = principale_div.get("class")
-            if not (cl and "w-full" in cl):
-                continue
+        for principale_div in soup.find_all("div", class_=re.compile("^w-full lg")):
             for div in principale_div.find_all("article"):
                 for a in div.find_all("a"):
                     cl = a.get("class")
