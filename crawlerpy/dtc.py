@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
 from html import unescape
-#from re import findall, I, U, DOTALL
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString, Tag
 
@@ -15,6 +15,9 @@ LIEN_ARTICLE = "http://danstonchat.com/{0}.html"
 
 
 def parse_contenu(div):
+    class_div = div.find("div",attrs={"class":"item-content"}).find("a").get("class")
+    if class_div is not None and set(class_div)=={"html","img"}:
+        return None
     t = div.find("h3")
     titre=""
     if t:
@@ -44,9 +47,10 @@ def parse_page(text):
     try:
         reponse = []
         soup = BeautifulSoup(text, 'html.parser')
-        d = soup.find("div",attrs={"class":"items"})
-        for div in d.find_all("div", recursive=False):
-            reponse.append(parse_contenu(div))
+        for div in soup.find_all(class_=re.compile(r"item item\d+")):
+            contenu = parse_contenu(div)
+            if contenu is not None:
+                reponse.append(contenu)
         return reponse
     except Exception as e:
         raise ParseException(e)
