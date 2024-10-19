@@ -1,3 +1,11 @@
+2.0.8
+* fix parser vdm -> modification du site
+* fix parser dtc -> modification du site
+* fix parser scmb -> modification du site
+
+Dernière mise à jour de la version 2.X
+
+
 2.0.7:
 * fix parser vdm -> modification du site
 * fix parser dtc -> suppression dtc image

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='crawler-py',
-    version='2.0.7',
+    version='2.0.8',
     url='http://johann-lecocq.fr/informatique-detail---bibliotheque--crawlerpy.html',
     license='GNU GPL 2',
     author='Johann Lecocq',
@@ -15,8 +15,8 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=[
-        'beautifulsoup4==4.7.1',
-        'requests==2.21.0'
+        'beautifulsoup4==4.12.3',
+        'requests==2.32.3'
     ],
     classifiers=[
         'Operating System :: OS Independent',
