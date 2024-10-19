@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 from html import unescape
+
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString, Tag
 
@@ -8,62 +9,82 @@ from crawlerpy import ArticleCrawler, ParseException
 from crawlerpy.sap import Article, Section, Data
 from crawlerpy.util import get
 
-LIEN_ACCUEIL = "http://danstonchat.com/latest.html"
-LIEN_ALEATOIRE = "http://danstonchat.com/random.html"
-LIEN_PAGE = "http://danstonchat.com/latest/{0}.html"
-LIEN_ARTICLE = "http://danstonchat.com/{0}.html"
+LIEN_ALEATOIRE = "https://danstonchat.com/random"
+LIEN_PAGE = "https://danstonchat.com/?query-8-page={0}"
+LIEN_ARTICLE = "https://danstonchat.com/quote/{0}.html"
 
 
-def parse_contenu(div):
-    class_div = div.find("div",attrs={"class":"item-content"}).find("a").get("class")
-    if class_div is not None and set(class_div)=={"html","img"}:
-        return None
-    t = div.find("h3")
-    titre=""
-    if t:
-        titre = "".join(t.find("a").find_all(text=True, recursive=False)).strip()
-    identifiant = "".join(div.get("class")).replace("item","").strip()
-    article = Article(identifiant)
+def parse_content(element) -> Section:
+    div_content = element.find("div", class_=re.compile(r"^entry-content"))
     section = Section("quote")
-    t=""
-    for e in div.find("div",attrs={"class":"item-content"}).find("a").children:
-        if e.name=="br":
-            section.add_content(Data("string",t))
-            t=""
-        elif e.name=="span":
+    t = ""
+    for e in div_content.find("p").children:
+        if e.name == "br":
+            section.add_content(Data("string", t))
+            t = ""
+        elif e.name == "span":
             for d in e.contents:
                 if type(d) == Tag:
                     t = "<" + d.name + "> "
                     break
             else:
-                t = "".join(e.find_all(text=True, recursive=False)).strip()+" "
-        elif type(e)== NavigableString:
-            t+=e.string.strip()
-    section.add_content(Data("string",t))
-    article.add_section(section)
+                t = "".join(e.find_all(text=True, recursive=False)).strip() + " "
+        elif type(e) == NavigableString:
+            t += e.string.strip()
+    section.add_content(Data("string", t))
+    return section
+
+
+def parse_title_content(article):
+    html_titre = article.find("h2").find("a")
+    identifiant = html_titre.attrs["href"].replace("https://danstonchat.com/quote/", "").replace(".html", "")
+    section_quote = parse_content(article)
+    article = Article(identifiant)
+    article.add_section(section_quote)
     return article
+
 
 def parse_page(text):
     try:
         reponse = []
         soup = BeautifulSoup(text, 'html.parser')
-        for div in soup.find_all(class_=re.compile(r"item item\d+")):
-            contenu = parse_contenu(div)
-            if contenu is not None:
-                reponse.append(contenu)
+        for article in soup.find_all("article"):
+            if article.find_all("figure") or article.find("h2") is None:
+                continue
+            reponse.append(parse_title_content(article))
         return reponse
     except Exception as e:
         raise ParseException(e)
 
-def parse_article(text, id_):
+
+def parse_random(text):
     try:
+        reponse = []
         soup = BeautifulSoup(text, 'html.parser')
-        return parse_contenu(soup.find("div",attrs={"id":id_}))
+        div_content = soup.find("main").find("div", class_=re.compile(r"^entry-content"))
+        for article in div_content.find_all("li", class_=re.compile(r"post-\d")):
+            reponse.append(parse_title_content(article))
+        return reponse
     except Exception as e:
         raise ParseException(e)
 
+
+def parse_article(text, id_):
+    try:
+        soup = BeautifulSoup(text, 'html.parser')
+        div_main = soup.find("main")
+        title = div_main.find("h1").get_text().strip()
+        content = parse_content(div_main)
+        article = Article(id_)
+        article.add_section(content)
+        return article
+    except Exception as e:
+        raise ParseException(e)
+
+
 class DtcCrawler(ArticleCrawler):
     """The implementation of DansTonChat crawler"""
+
     def __init__(self):
         ArticleCrawler.__init__(self)
 
@@ -96,6 +117,6 @@ class DtcCrawler(ArticleCrawler):
         if code != 200:
             return code, []
         try:
-            return 200, parse_page(data)
+            return 200, parse_random(data)
         except ParseException:
             return 521, []
