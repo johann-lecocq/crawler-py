@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
+
 from bs4 import BeautifulSoup
 from html import unescape
 
@@ -16,22 +18,15 @@ def parse(text):
     try:
         reponse = []
         soup = BeautifulSoup(text, 'html.parser')
-        articles = soup.find_all("article")
-        for article in articles:
-            if "anecdote" not in article.get("class"):
+        for article in soup.find_all("article"):
+            if article.find("a", href=re.compile(r"subscribe")):
                 continue
-            header = article.find("header")
-            if header is None:  # if one article in the page
-                for cl in soup.find_all("section"):
-                    if cl.get("id") == "anecdote-item":
-                        container_lien = soup.find("section").find("h1")
-            else:  # many article in the page
-                container_lien = header.find("h1")
-            lien = container_lien.find("a").get("href").replace("/", "")
-            text = article.find("p").get_text().replace('En savoir plus', "").strip()
+            a_content = article.find("p", class_=re.compile(r"summary")).find("a")
+            id_ = a_content.get("href").replace("/", "")
+            texte = a_content.children.__next__().getText()
+            article = Article(id_)
             section = Section("anecdote")
-            section.add_content(Data("string", text))
-            article = Article(lien)
+            section.add_content(Data("string", texte))
             article.add_section(section)
             reponse.append(article)
         return reponse
@@ -39,30 +34,45 @@ def parse(text):
         raise ParseException(e)
 
 
+def parse_article(text) -> Section:
+    try:
+        soup = BeautifulSoup(text, 'html.parser')
+        article = soup.find("article")
+        p_content = article.find("p", class_=re.compile(r"summary"))
+        texte = p_content.getText()
+        section = Section("anecdote")
+        section.add_content(Data("string", texte))
+        return section
+    except Exception as e:
+        raise ParseException(e)
+
+
 class ScmbCrawler(ArticleCrawler):
     """The implementation of VieDeMerde crawler"""
+
     def __init__(self):
         ArticleCrawler.__init__(self)
 
-    def __go(self, lien):
+    def __go(self, lien, parse_function):
         code, text = get(lien)
         if code == 200:
             text = unescape(text)
             try:
-                return 200, parse(text)
+                return 200, parse_function(text)
             except ParseException:
                 return 521, []
-            code = 200
         return code, []
 
     def page(self, id_):
-        code, data = self.__go(LIEN_PAGE.format(int(id_) + 1))
+        code, data = self.__go(LIEN_PAGE.format(int(id_) + 1), parse)
         return code, data
 
     def article(self, id_):
-        code, data = self.__go(LIEN_ARTICLE.format(id_))
-        return code, data[0]
+        code, data = self.__go(LIEN_ARTICLE.format(id_), parse_article)
+        article = Article(id_)
+        article.add_section(data)
+        return code, article
 
     def random(self):
-        code, data = self.__go(LIEN_ALEATOIRE)
+        code, data = self.__go(LIEN_ALEATOIRE, parse)
         return code, data
